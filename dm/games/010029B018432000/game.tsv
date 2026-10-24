@@ -1,6 +1,6 @@
 # Game profile of Ghost Trick: Phantom Detective (Switch, base game v0)
 # RE Engine on SDK 13.3.0 with Wwise audio and H.264/AAC movies through subsdk0.
-# Mac bring-up reaches the language screen; all 7,744 shaders compile.
+# Mac and iPhone bring-up reach the language screen at a stable 60 fps; all 7,744 shaders compile.
 
 # ---- Identity ----
 title_id	010029B018432000
