@@ -1,5 +1,29 @@
 # 01 — Extracting an NSP
 
+## NSZ inputs
+
+The porting script consumes standard NSP containers. When the source dump is
+NSZ, decompress it first with the repository wrapper:
+
+```bash
+python3 scripts/decompress_nsz.py \
+  -k /path/to/prod.keys \
+  -o /path/to/game/decompressed \
+  /path/to/game/base.nsz /path/to/game/bonus-content.nsz
+```
+
+This invokes the `nsz` CLI with `-D`. The tool verifies the NCA hashes while it
+writes each `.nsp`, keeps the original `.nsz` files, and never uses
+`--rm-source`. Install the CLI in the Python environment used for the command
+when needed:
+
+```bash
+python3 -m pip install nsz
+```
+
+Use the resulting NSP directory as the input to
+`scripts/build_ipa_from_nsp.py`.
+
 ## Keys
 
 - Needs the user's own `prod.keys` and the title key from the NSP's ticket. Keep both under the work folder, e.g. `$W/build/keys/.switch/{prod,title}.keys`, and run hactool with `HOME` pointed there so it never reads anything else:
