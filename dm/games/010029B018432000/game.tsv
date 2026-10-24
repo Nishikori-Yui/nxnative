@@ -1,6 +1,6 @@
 # Game profile of Ghost Trick: Phantom Detective (Switch, base game v0)
 # RE Engine on SDK 13.3.0 with Wwise audio and H.264/AAC movies through subsdk0.
-# Mac bring-up reached the title/movie path without a host change; all 7,744 shaders compile.
+# Mac bring-up reaches the language screen; all 7,744 shaders compile.
 
 # ---- Identity ----
 title_id	010029B018432000
@@ -34,6 +34,10 @@ sys_resource	0x0
 # ---- Shader split (RE Engine SDF entries in the pak and GLSLC outputs in main) ----
 shader_groups	/natives/=natives
 shader_note	Ghost Trick: Phantom Detective shaders
+
+# RE Engine writes UI ASTC textures into CPU-visible pools without a flush.
+tex_flush_upload	on
+tex_dirty_upload	on
 
 # ---- After the rewrite ----
 # the rewritten modules are larger than the default 64 MB of used memory (Age of Calamity: 66.6 MB → 72 MB)
