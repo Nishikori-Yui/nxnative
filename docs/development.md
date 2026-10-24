@@ -749,6 +749,12 @@ The game's own work and its frame rate stay as they are; the host avoids work of
 - **Input:** the pad only (`main` imports no touch screen); the default 2D gamepad layout. The title asks for L+R.
 - **Mac input:** the work folder's `run/boot.sh <log> [secs] VAR=…` runs `build/konghost`, `run/ctl.sh` / `run/step.sh` drive a run started with `DM_CTL`. The opening movie plays at every boot and Plus skips it (about 18 s in); then L+R on the title, A for file 1 (level select) and A for level 1-1, which starts about 15 s later. In level 1-1 `LRight~0.3`, `LRight+A~0.25` hits the blue switch and `LRight~0.55`, `LRight+A~0.15` the red one.
 
+**Ghost Trick: Phantom Detective (`010029B018432000`)**
+- **Status:** base game 1.0.0 (`v0`) with Bonus Content add-on index 1. The unsigned IPA builds successfully at about 3.0 GB. The Mac host reaches the title/movie path for more than 30 seconds with no unhandled host import, crash, or red line; iPhone play and save behavior remain to be tested.
+- **Engine and files:** Capcom's RE Engine on SDK 13.3.0, with `subsdk0` for movies, Wwise audio, and one `re_chunk_000.pak` containing the game data. The provisional survey found no virtual address memory; the profile uses a 3.25 GB heap region and reports 135 MB of used memory after rewriting.
+- **Shaders:** 7,744 RE Engine SDF / GLSLC shader programs from the pak and `main`; 7,739 compile for Mac and iOS. Five fail Metal compilation because generated code indexes an array with a non-integer expression; the failed keys are recorded in `010029B018432000_build/logs/dmsh_build.log`. The Mac route so far does not use those five shaders.
+- **Mac route:** the game starts with `DM_WINDOW=0 DM_AUDIO=0` and reaches movie playback. The generated IPA is `GhostTrickPhantomDetective.ipa`; use the base game's English language by default, with `DM_LANG` available for the other supported languages.
+
 ## Tools (`dm/tools`)
 
 | Tool | What it does |
