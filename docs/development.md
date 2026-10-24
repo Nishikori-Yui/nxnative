@@ -1,5 +1,27 @@
 # Development
 
+## NSZ to NSP before porting
+
+`build_ipa_from_nsp.py` and `dm/tools/nx_extract` read standard NSP
+containers. For a game dump supplied as NSZ, decompress every base, update,
+and DLC file before starting the survey or build:
+
+```bash
+python3 scripts/decompress_nsz.py \
+  -k /path/to/prod.keys \
+  -o /path/to/game/decompressed \
+  /path/to/game/base.nsz /path/to/game/dlc.nsz
+
+python3 scripts/build_ipa_from_nsp.py /path/to/game/decompressed \
+  -k /path/to/prod.keys
+```
+
+The wrapper calls `nsz -D`, which verifies NCA hashes during decompression. It
+keeps the NSZ inputs and writes `.nsp` files into the selected output
+directory. It does not delete or modify the source files. Install the
+third-party CLI once in the Python environment used for the build with
+`python3 -m pip install nsz`.
+
 The README covers packing and playing. This page is for working on nxnative itself: how it is built, the script's options, running games on the Mac, adding a game, and per-game notes. Agent-oriented details (bring-up failure catalogue, graphics specifics, debugging recipes) are in [docs/agents](agents/README.md).
 
 ## How it works
