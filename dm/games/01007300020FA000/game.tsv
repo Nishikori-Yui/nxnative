@@ -11,6 +11,8 @@ ipa	AstralChain.ipa
 app_category	public.app-category.action-games
 # Both sticks are used for movement and camera.
 pad_layout	full
+# Build-gated frame step: 60 fps gameplay, 30 fps fixed-step cinematics.
+fps_target	60
 
 # ---- Versions ----
 build	v65536	1.0.1	main=4b159f0f7a360669738390ee8657b4f0	sdk=e29be8ad6778527aa248310d0c71a8a5

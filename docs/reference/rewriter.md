@@ -139,6 +139,13 @@ The NSO rewriter (`dm/tools/patch_nso.py`) and its per-build tables (`dm/tools/s
 - **Found on:** [Metroid Dread](../../dm/games/010093801237C000/README.md) `main`.
 - **Check:** Mario's and Engage's output is byte-identical to before.
 
+### Frame-step state with a front patch area
+
+- **Symptom:** `frame step state page` assertion when a `FRAME_STEP` profile is added to a module with a large BSS.
+- **Cause:** frame-state allocation required a patch area after the image, although the stubs can address the state page through ADRP with either layout.
+- **Fix:** for a front patch area, reserve a zero-filled 16 KB state page immediately after the key page by extending `IMAGE_SIZE`. The existing Mac and iOS loaders map it with the BSS; no padding is added to the game binary. Ordinary modules retain their existing layout.
+- **Found on:** [ASTRAL CHAIN](../../dm/games/01007300020FA000/README.md#frame-rate).
+
 ### Patch area right before the base for a long text
 
 - **Symptom:** `B()` range assertion, then `patch area of … bytes does not fit in the … before the base`.
