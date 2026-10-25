@@ -21,7 +21,7 @@ The shader split found 605 shaders (301 pixel, 304 vertex); the game's route ren
 
 With the Mac host running under `DM_CTL`, press `A` at the title prompt and `A` again to advance the opening. When the prayer menu appears, press `B` to return to the playable scene. Append `shot <path>` to the same control file for a capture. The host created and committed `Save_0.bin` during the run.
 
-The user confirmed that the iOS build launches and provided a performance capture; iOS input, audio and haptics have not been separately exercised here.
+The user confirmed that the iOS build launches and separately validated input, audio and haptics. Their performance capture shows an A18 Pro running iOS 27.2 at 59.99 fps with a 16.67 ms frame interval.
 
 ## Found on this game
 
@@ -30,4 +30,4 @@ The user confirmed that the iOS build launches and provided a performance captur
 ## Open
 
 - Recover the default-resource compute shader type tree if a tested area requests one.
-- Validate the base build, sustained story progression, audio and controller/haptic behavior.
+- Validate the base build and sustained story progression.
