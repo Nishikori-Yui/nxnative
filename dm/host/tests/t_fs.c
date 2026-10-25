@@ -51,6 +51,12 @@ int main(void) {
     setenv("DM_ROMFS", rom, 1); setenv("DM_ROMFS_OVERLAY", overlay, 1); CHECK(h_fs_MountRom("rom", NULL, 0) == RES_OK, "mount RomFS with two layers (base + overlay)");
     CHECK(read_fs("rom:/data/same", got, sizeof got) && !strcmp(got, "overlay"), "the overlay file wins"); CHECK(read_fs("rom:/data/base", got, sizeof got) && !strcmp(got, "only-base"), "falls back to the base when the overlay lacks the file");
     uint64_t rh; CHECK(h_fs_OpenFile(&rh, "rom:/data/same", MODE_WRITE) == RES_FAIL, "the two-layer mount refuses writes");
+    CHECK(h_fs_OpenFile(&rh, "rom:/data/base", MODE_READ) == RES_OK, "open a file for exact reads with read options");
+    unsigned read_opt = 0; memset(got, 0, sizeof got);
+    CHECK(h_fs_ReadFileExactOpt(rh, 5, got, 4, &read_opt) == RES_OK && !memcmp(got, "base", 4), "exact read with options reads the requested offset and length");
+    CHECK(h_fs_ReadFileExactOpt(rh, 8, got, 4, &read_opt) != RES_OK, "exact read with options rejects a short read");
+    h_fs_CloseFile(rh);
+    CHECK(h_fs_ReadFileExactOpt(0, 0, got, 1, &read_opt) != RES_OK, "exact read with options rejects a null file handle");
     g_nmnt = 0;
     snprintf(save, sizeof save, "%s/save", root); snprintf(work, sizeof work, "%s.work", save);
     mkdir(save, 0755); snprintf(p, sizeof p, "%s/a", save); put(p, "old");

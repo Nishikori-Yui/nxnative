@@ -1,0 +1,40 @@
+# Game profile of NINJA GAIDEN Σ (Switch, update 1.0.2 = v131072 over the base game). Mac-tested through Chapter 1 gameplay
+# Format: see dm/games/README.md
+# Team Ninja's engine on SDK 10.9.0, NVN. Modules main, subsdk0 (NintendoSDK_movie) and sdk.
+# Shader programs are GLSLC outputs in indexed zlib databin / patchbin archives and main; shader_split.py reads the archive entries.
+
+# ---- Identity ----
+title_id	0100E2F014F46000
+program_id	0100E2F014F46000
+
+# ---- App ----
+# The app name and bundle ID come from the base game's control data and title ID.
+name	NINJA GAIDEN Σ
+ipa	NinjaGaiden.ipa
+app_category	public.app-category.games
+pad_layout	full
+
+# ---- Versions ----
+build	v131072	1.0.2	main=7aeabb797c9317143f3fc0f650302321	subsdk0=84ad6bbd7473bf736132f417dc2e3932	sdk=9d4d47cf4d5162676ff65e81607d37aa
+package	v131072
+shader_versions	v131072
+
+# ---- Files ----
+# main imports from these modules; subsdk0 is NintendoSDK_movie.
+modules	main subsdk0 sdk
+romfs_marker	databin/databin
+zip_store	.mp4:.metallib
+
+# ---- Memory ----
+# No system resource: the game uses the 4 GB address-space layout and sets a heap from the app pool.
+mem_reserve	0x100000000
+mem_alias	0x10000000
+mem_stack	0x10000000
+app_pool	0xCD500000
+sys_resource	0x0
+# The rewritten modules require more than the default 64 MB reported as used memory.
+mem_used	0x5c00000
+
+# ---- Shader split (shader_split.py; GLSLC) ----
+shader_groups	/databin/=databin /patchbin/=patchbin
+shader_note	NINJA GAIDEN Σ shaders
