@@ -575,7 +575,17 @@ def jump_offsets(insl, j, copy_first=False, far_base=False):
         if lo is None and far_base:   # nothing writes the base in the window
             tb = table_base(insl, k, rb, far=True)
             if tb is None: tb = copied_base(insl, k, rb)   # built further back and copied on its way (below)
-            if tb is None or tb + 4 * n > len(IMG): return None
+            if tb is None:
+                # The dispatch can precede the table-base setup in address order, so its writer chain is not in the preceding instructions.
+                # Accept a function-wide candidate only when it is unique and every entry lands on an instruction in this function.
+                fa, fb = insl[0].address, insl[-1].address + 4
+                candidates = []
+                for tb in table_cands(insl, rb):
+                    if tb < 0 or tb + 4 * n > len(IMG): continue
+                    targets = [tb + struct.unpack_from('<i', IMG, tb + 4 * i)[0] for i in range(n)]
+                    if all(fa <= x < fb and x % 4 == 0 for x in targets): candidates.append(targets)
+                return candidates[0] if len(candidates) == 1 else None
+            if tb < 0 or tb + 4 * n > len(IMG): return None
             t = [tb + struct.unpack_from('<i', IMG, tb + 4 * i)[0] for i in range(n)]
             fa, fb = insl[0].address, insl[-1].address + 4
             return t if all(fa <= x < fb and x % 4 == 0 for x in t) else None

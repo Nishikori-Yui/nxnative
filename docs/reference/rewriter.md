@@ -36,6 +36,14 @@ The NSO rewriter (`dm/tools/patch_nso.py`) and its per-build tables (`dm/tools/s
 - **Found on:** ASTRAL CHAIN 1.0.1 (SDK 6) `main+0x6db4a0`: three of that `main`'s five `br x18` sites need it.
 - **Check:** modules that rewrote before come out the same (Tears of the Kingdom, Age of Calamity, Cuphead, DARK SOULS: REMASTERED, Luigi's Mansion 3 and Metroid Dread `main`s: byte-identical).
 
+### Offset-table setup after its dispatch
+
+- **Symptom:** `jump table <addr>` assertion on a checked offset table whose base is initialized later in the function's instruction order (`cmp w18,#9; b.hi; ldrsw x18,[x17,x18,lsl #2]; add x18,x18,x17; br x18`).
+- **Cause:** the SDK's table-base `adrp` + `add` follows the dispatch block in address order, so neither the local writer-chain search nor its backward function-wide walk can find it.
+- **Fix:** as a last attempt, `jump_offsets` checks the function's `adrp` + `add` candidates and accepts only one table whose bounded entries all land on instructions in that function. Ambiguous candidates are rejected.
+- **Found on:** [Blasphemous](../../dm/games/0100698009C6E000/README.md), update 1.0.8, SDK 8.3.1 `sdk+0xae95f8`.
+- **Check:** `test_jump_table_base_order.py` covers the unique candidate and rejects an ambiguous one.
+
 ### Far table base passed through other registers
 
 - **Symptom:** `jump table <addr>` assertion on an offset table whose base was set far back and moved through other registers (`ldrb w18,[x14]; sub w18,w18,#1; cmp w18,#6; b.hi; ldrsw x18,[x7,x18,lsl #2]; add x18,x18,x7; br x18`).
