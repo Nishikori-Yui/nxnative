@@ -116,10 +116,11 @@ static GCController *g_held[DM_PLAYERS];   // the controller of each slot, kept 
 static int g_merge, g_kbd_own;
 static int32_t pad_axis(float v) { return (int32_t)(fmaxf(-1.f, fminf(1.f, v)) * DM_STICK_MAX); }
 static int pad_uses_nintendo_labels(GCController *controller) {
-    NSString *name = controller.vendorName ?: @"";
-    return [name localizedCaseInsensitiveContainsString:@"nintendo"] ||
-           [name localizedCaseInsensitiveContainsString:@"pro controller"] ||
-           [name localizedCaseInsensitiveContainsString:@"joy-con"];
+    NSString *category = controller.productCategory ?: @"";
+    // Apple and third-party metadata use both "Joy-Con" and "JoyCon".
+    return [category localizedCaseInsensitiveContainsString:@"switch"] ||
+           [category localizedCaseInsensitiveContainsString:@"joy-con"] ||
+           [category localizedCaseInsensitiveContainsString:@"joycon"];
 }
 static void pad_read(GCExtendedGamepad *g) {
     if (!g_input_on) return;
